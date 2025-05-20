@@ -1,8 +1,0 @@
-[jitsi]
-# This will be automatically filled by Terraform
-# Format: [server_ip] ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa domain=meet.example.com
-# Example:
-# 54.175.123.45 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa domain=meet.example.com
-
-[jitsi:vars]
-ansible_python_interpreter=/usr/bin/python3
