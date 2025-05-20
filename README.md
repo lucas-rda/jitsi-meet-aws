@@ -1,8 +1,8 @@
-# 🚀 Jitsi Meet on AWS with Terraform and Ansible
+# Jitsi Meet on AWS with Terraform and Ansible
 
 This project automates the deployment of a secure, production-ready [Jitsi Meet](https://jitsi.org/jitsi-meet/) video conferencing server on AWS using Terraform for infrastructure provisioning and Ansible for application configuration.
 
-## 📋 Features
+## Features
 
 - **Fully Automated Deployment**: Infrastructure and application setup in a few commands
 - **Secure by Default**: Proper security groups, restricted SSH access, HTTPS with Let's Encrypt
@@ -10,7 +10,7 @@ This project automates the deployment of a secure, production-ready [Jitsi Meet]
 - **DNS Configuration**: Automatic Route53 DNS record creation
 - **Minimal Maintenance**: Simple to update and maintain
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌───────────────────┐          ┌───────────────────────────────────┐
@@ -36,7 +36,7 @@ This project automates the deployment of a secure, production-ready [Jitsi Meet]
                                └─────────────────────────┘
 ```
 
-## 📦 Prerequisites
+## Prerequisites
 
 - [Terraform](https://www.terraform.io/downloads.html) (v1.0+)
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) (v2.9+)
@@ -44,12 +44,12 @@ This project automates the deployment of a secure, production-ready [Jitsi Meet]
 - Registered domain with Route53 hosted zone
 - SSH keypair for server access
 
-## 🔧 Installation
+## Installation
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/jitsi-on-aws.git
+git clone https://github.com/lucas-rda/jitsi-meet-aws.git
 cd jitsi-on-aws
 ```
 
@@ -80,8 +80,6 @@ subdomain = "meet"
 hosted_zone_id = "YOUR_ROUTE53_ZONE_ID"
 ```
 
-Note: The `variables.tf` file defines all available variables with their default values, but certain required values like `ssh_public_key` and `hosted_zone_id` must be provided in your `terraform.tfvars`.
-
 ### 3. Deploy infrastructure with Terraform
 
 ```bash
@@ -101,7 +99,7 @@ ansible-playbook -i inventory.ini playbook.yml
 
 Note: The `inventory.ini` file is generated dynamically by Terraform based on your deployment, so you don't need to create or edit it manually.
 
-## 🌐 Accessing Jitsi Meet
+## Accessing Jitsi Meet
 
 Once deployment is complete, you can access your Jitsi Meet installation at:
 
@@ -111,7 +109,7 @@ https://meet.example.com
 
 (Replace `meet.example.com` with your configured domain)
 
-## ⚙️ Customization
+##  Customization
 
 ### Scaling for larger meetings
 
@@ -142,7 +140,7 @@ For increased security:
 
 2. Consider implementing additional security measures in the Ansible playbook.
 
-## 🧹 Cleanup
+##  Cleanup
 
 To destroy all created resources:
 
@@ -151,7 +149,7 @@ cd terraform
 terraform destroy
 ```
 
-## 🔒 Security Considerations
+## Security Considerations
 
 - The server is configured with Let's Encrypt SSL certificates for HTTPS.
 - SSH access is restricted to the IP range specified in `allowed_ssh_cidr`.
@@ -161,10 +159,6 @@ terraform destroy
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🙏 Acknowledgements
 
