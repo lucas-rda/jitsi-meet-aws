@@ -156,11 +156,8 @@ terraform destroy
 - Security groups are configured to allow only necessary traffic.
 - All communications are encrypted using standard web security practices.
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 🙏 Acknowledgements
+  
+## Acknowledgements
 
 - [Jitsi Meet](https://jitsi.org/jitsi-meet/) for their amazing open-source video conferencing platform
 - [Terraform](https://www.terraform.io/) for infrastructure as code capabilities
