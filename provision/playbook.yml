@@ -1,0 +1,107 @@
+---
+- name: Install and Configure Jitsi Meet
+  hosts: jitsi
+  become: yes
+  vars:
+    jitsi_domain: "{{ hostvars[inventory_hostname]['domain'] }}"
+  
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install required packages
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+          - software-properties-common
+        state: present
+
+    - name: Add Jitsi Meet repository key
+      apt_key:
+        url: https://download.jitsi.org/jitsi-key.gpg.key
+        state: present
+
+    - name: Add Jitsi Meet repository
+      apt_repository:
+        repo: deb https://download.jitsi.org stable/
+        state: present
+        filename: jitsi
+
+    - name: Set debconf settings for Jitsi Meet
+      debconf:
+        name: jitsi-videobridge2
+        question: jitsi-videobridge/jvb-hostname
+        value: "{{ jitsi_domain }}"
+        vtype: string
+
+    - name: Set debconf settings for Jitsi Meet certificate
+      debconf:
+        name: jitsi-meet-web-config
+        question: jitsi-meet/cert-choice
+        value: "Generate a new self-signed certificate (You will later get a chance to obtain a Let's encrypt certificate)"
+        vtype: string
+
+    - name: Install Jitsi Meet
+      apt:
+        name:
+          - jitsi-meet
+        state: present
+      register: jitsi_install
+
+    - name: Configure firewall (UFW)
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: "{{ 'tcp' if item not in ['10000'] else 'udp' }}"
+      loop:
+        - "80"
+        - "443"
+        - "10000"
+        - "22"
+      when: jitsi_install.changed
+
+    - name: Enable UFW
+      ufw:
+        state: enabled
+        policy: deny
+      when: jitsi_install.changed
+
+    - name: Install Let's Encrypt certificate
+      shell: /usr/share/jitsi-meet/scripts/install-letsencrypt-cert.sh
+      args:
+        creates: /etc/letsencrypt/live/{{ jitsi_domain }}/fullchain.pem
+      register: letsencrypt_install
+      ignore_errors: yes
+
+    - name: Restart Jitsi services
+      service:
+        name: "{{ item }}"
+        state: restarted
+      loop:
+        - jicofo
+        - jitsi-videobridge2
+        - prosody
+      when: jitsi_install.changed or letsencrypt_install.changed
+
+    - name: Check Jitsi services status
+      service:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      loop:
+        - jicofo
+        - jitsi-videobridge2
+        - prosody
+        - nginx
+
+    - name: Print success message
+      debug:
+        msg: |
+          Jitsi Meet has been successfully installed and configured!
+          You can access it at: https://{{ jitsi_domain }}
