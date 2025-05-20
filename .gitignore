@@ -1,0 +1,46 @@
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Terraform variable files
+*.tfvars
+*.tfvars.json
+!terraform.tfvars.example
+
+# Sensitive files
+*.pem
+*.key
+id_rsa*
+
+# Ansible retry files
+*.retry
+
+# Generated inventory files
+provision/inventory.ini
+
+# Ignore override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# IDE & OS specific files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# Logs
+*.log
